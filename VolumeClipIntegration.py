@@ -4,7 +4,6 @@ from __main__ import vtk, qt, ctk, slicer
 from slicer.ScriptedLoadableModule import *
 from Editor import EditorWidget
 
-# from VolumeClipWithModel import VolumeClipWithModelWidget
 #
 # VolumeClipIntegration
 #
@@ -25,8 +24,6 @@ class VolumeClipIntegration(ScriptedLoadableModule):
     """
     self.parent.acknowledgementText = """ self.parent.acknowledgementText """
 
-
-    # replace with organization, grant and thanks."
 
 #
 # VolumeClipIntegrationWidget
@@ -74,7 +71,6 @@ class VolumeClipIntegrationWidget(ScriptedLoadableModuleWidget):
     # Start Prostate Segmentation Button
     #
     self.applyButton = qt.QPushButton("Start Prostate Segmentation")
-    # self.applyButton.toolTip = "Run the algorithm."
     self.applyButton.enabled = True
     parametersFormLayout.addRow(self.applyButton)
 
@@ -96,28 +92,6 @@ class VolumeClipIntegrationWidget(ScriptedLoadableModuleWidget):
     # Add vertical spacer
     self.layout.addStretch(1)
 
-    # TESTING
-
-    # stand unter: def __init__(self, parent):
-    # self.parameterNode = None
-    # self.parameterNodeObserver = None
-    # self.clippingMarkupNode = None
-    # self.clippingMarkupNodeObserver = None
-
-    # VolumeClipWidget=slicer.modules.volumeclipwithmodel.widgetRepresentation().self()
-    # VolumeClipWidget.setAndObserveParameterNode(parameterNode)
-
-    # VolumeClipWidget=slicer.modules.volumeclipwithmodel.widgetRepresentation().self()
-    # parameterNode=VolumeClipWidget.getParameterNode()
-    # parameterNodeTwo=VolumeClipIntegrationLogic.getParameterNode()
-
-    # Set parameter node (widget will observe it and also updates GUI)
-    # VolumeClipWidget.setAndObserveParameterNode(VolumeClipIntegrationLogic,parameterNodeTwo)
-    # VolumeClipWidget.addGUIObservers()
-
-    # TESTIND END
-
-
   def cleanup(self):
     pass
 
@@ -126,10 +100,6 @@ class VolumeClipIntegrationWidget(ScriptedLoadableModuleWidget):
 
   def onApplyButton(self):
     logic = VolumeClipIntegrationLogic()
-
-    # Set input & output volume
-
-    inputVolume=self.inputSelector.currentNode()
 
     print("onApplyButton")
     logic.run(self.inputSelector.currentNode())
@@ -194,7 +164,10 @@ class VolumeClipIntegrationLogic(ScriptedLoadableModuleLogic):
     # set four up view, select persistent fiducial marker as crosshair
     self.setVolumeClipUserMode()
 
+    # let user place Fiducials
     self.placeFiducials()
+
+    # timer test
     # self.timer()
 
     return True
@@ -223,7 +196,6 @@ class VolumeClipIntegrationLogic(ScriptedLoadableModuleLogic):
     import VolumeClipWithModel
     clipLogic=VolumeClipWithModel.VolumeClipWithModelLogic()
     clipLogic.updateModelFromMarkup(inputMarkup, clippingModel)
-    print"updateModel(self) passed"
 
   def placeFiducials(self):
 
@@ -242,6 +214,7 @@ class VolumeClipIntegrationLogic(ScriptedLoadableModuleLogic):
     slicer.mrmlScene.AddNode(inputMarkup)
     inputMarkup.SetAndObserveDisplayNodeID(displayNode.GetID())
 
+    # add Observer
     inputMarkup.AddObserver(vtk.vtkCommand.ModifiedEvent,self.updateModel)
 
     return True
@@ -269,7 +242,7 @@ class VolumeClipIntegrationLogic(ScriptedLoadableModuleLogic):
   #  s=0
   #  import time
   #  while s<=10:
-  #   print ('Huhu')
+  #   print ('timer')
   #    time.sleep(1)
   #   s += 1
 
